@@ -1,10 +1,12 @@
 import tkinter as tk
-from Tools.scripts.mailerdaemon import emparse_list_from
+
+import numpy as np
 
 
 class BludisteApp(tk.Tk):
-    def __init__(self):
-        tk.Tk.__init__(self)
+    def __init__(self, canvas):
+        self.canvas = canvas
+
 
 
 
@@ -21,13 +23,27 @@ class Bludiste:
         return vyska
 
 
+class DesignPattern:
+    def __init__(self):
+        pass
+    def getBludisteData(self):
+        pass
+
+
 class BludisteView:
     def __init__(self, canvas, bludiste_data, size):
         self.canvas = canvas
-        self.bludiste_data = bludiste_data
         self.size = size
 
+    def create_bludiste(self):
+        n = self.size
+        self.bludiste_data = np.random.randint(2, size=(n, n))
+        print(self.bludiste_data)
+
     def kresli_bludiste(self):
+        if self.bludiste_data is None:
+            raise ValueError("Bludiste data nebyla vytvořena. Spusťte nejdříve metodu 'create_bludiste'.")
+
             radky = len(self.bludiste_data)
             sloupce = len(self.bludiste_data[0])
 
@@ -44,11 +60,8 @@ root = tk.Tk()
 canvas = tk.Canvas(root, width=500, height=500)
 canvas.pack()
 
-bludiste_data = ([[1, 0, 1, 0],
-                  [1, 0, 1, 0],
-                  [1, 0, 0, 0],
-                  [1, 1, 1, 1],
-                  ])
+bludiste = BludisteView(canvas, bludiste_data, size=100)
+bludiste.create_bludiste()
 
 bludiste = BludisteView(canvas, bludiste_data, 100)
 bludiste.kresli_bludiste()
