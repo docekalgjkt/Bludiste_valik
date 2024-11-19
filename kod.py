@@ -2,6 +2,7 @@ import tkinter as tk
 
 import numpy as np
 
+import csv
 
 class BludisteApp(tk.Tk):
     def __init__(self, canvas):
@@ -37,6 +38,13 @@ class DAO:
        with open(filename, 'r') as file:
            bludiste_data = np.loadtxt(filename, dtype=int)
            print(bludiste_data)
+
+    def getBludisteDataCsv(self,filename):
+        with open(filename, 'r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                bludiste_data.append([int(value) for value in row])
+            print(bludiste_data)
 
 
 
