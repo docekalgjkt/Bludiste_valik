@@ -29,11 +29,17 @@ class Bludiste:
         print(f"Bludiste data saved to {filename}")
 
 
-class DesignPattern:
-    def __init__(self):
-        pass
-    def getBludisteData(self):
-        pass
+class DAO:
+    def __init__(self, bludiste_data):
+        self.bludiste_data = bludiste_data
+
+    def getBludisteDataTxt(self,filename):
+       with open(filename, 'r') as file:
+           bludiste_data = np.loadtxt(filename, dtype=int)
+           print(bludiste_data)
+
+
+
 
 
 class BludisteView:
@@ -70,13 +76,16 @@ canvas.pack()
 bludiste = BludisteView(canvas, bludiste_data, 100)
 bludiste.kresli_bludiste()
 
+dao = DAO(bludiste_data)
+dao.getBludisteDataTxt("bludiste_save.txt")
+
 bludiste_objekt = Bludiste(bludiste_data)
 sirka = bludiste_objekt.getSirka()
 print("sirka =", sirka)
 vyska = bludiste_objekt.getVyska()
 print("vyska =", vyska)
 
-bludiste_objekt.save_to_file("bludiste_data.txt")
+bludiste_objekt.save_to_file("bludiste_save.txt")
 
 
 root.mainloop()
