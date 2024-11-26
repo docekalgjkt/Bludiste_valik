@@ -4,6 +4,8 @@ import numpy as np
 
 import csv
 
+import xml.etree.ElementTree as ET
+
 class BludisteApp(tk.Tk):
     def __init__(self, canvas):
         self.canvas = canvas
@@ -23,21 +25,28 @@ class Bludiste:
         vyska = len(self.bludiste_data[0])
         return vyska
 
-    def save_to_file(self, filename):
-        with open(filename, 'w') as file:
-            for row in self.bludiste_data:
-                file.write(' '.join(map(str, row)) + '\n')
-        print(f"Bludiste data saved to {filename}")
-
 
 class DAO:
     def __init__(self, bludiste_data):
         self.bludiste_data = bludiste_data
 
+    def save_to_txt_file(self, filename):
+        with open(filename, 'w') as file:
+            for row in self.bludiste_data:
+                file.write(' '.join(map(str, row)) + '\n')
+        print(f"Bludiste data saved to {filename}")
+
     def getBludisteDataTxt(self,filename):
        with open(filename, 'r') as file:
            bludiste_data = np.loadtxt(filename, dtype=int)
            print(bludiste_data)
+
+    def save_to_csv_file(self, filename):
+        with open(filename, 'w', newline='') as csvfile:
+            mazewriter = csv.writer(csvfile, delimiter=',')
+            for row in self.bludiste_data:
+                mazewriter.writerow(row)
+        print(f"Bludiste data saved to {filename}")
 
     def getBludisteDataCsv(self,filename):
         with open(filename, 'r') as file:
@@ -46,7 +55,14 @@ class DAO:
                 bludiste_data.append([int(value) for value in row])
             print(bludiste_data)
 
-
+    def save_to_xml_file(self, filename):
+        root = ET.Element(bludiste_data)
+        for row in self.bludiste_data:
+            row = ET.SubElement(root, 'row')
+            for value in row:
+                ET.SubElement(row, 'value', value=str(value))
+        tree = ET.ElementTree(root)
+        tree.write(filename)
 
 
 
@@ -85,15 +101,16 @@ bludiste = BludisteView(canvas, bludiste_data, 100)
 bludiste.kresli_bludiste()
 
 dao = DAO(bludiste_data)
-dao.getBludisteDataTxt("bludiste_save.txt")
+dao.getBludisteDataCsv("bludiste_save.csv")
+dao.save_to_txt_file("bludiste_save.txt")
+dao.save_to_csv_file("bludiste_save.csv")
+dao.save_to_xml_file("bludiste_save.xml")
 
 bludiste_objekt = Bludiste(bludiste_data)
 sirka = bludiste_objekt.getSirka()
 print("sirka =", sirka)
 vyska = bludiste_objekt.getVyska()
 print("vyska =", vyska)
-
-bludiste_objekt.save_to_file("bludiste_save.txt")
 
 
 root.mainloop()
