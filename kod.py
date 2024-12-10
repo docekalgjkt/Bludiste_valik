@@ -97,11 +97,19 @@ class BludisteView:
                     y1 = i * self.size
                     x2 = x1 + self.size
                     y2 = y1 + self.size
-                    color = 'black' if self.bludiste_data[i][j] == 1 else 'white'
+                    if self.bludiste_data[i][j] == 0:
+                        color = 'white'
+                    elif self.bludiste_data[i][j] == 1:
+                        color = 'black'
+                    elif self.bludiste_data[i][j] == 2:
+                        color = 'red'
+                    elif self.bludiste_data[i][j] == 3:
+                        color ='cyan'
+
                     self.canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline="gray")
 
 
-bludiste_data = ([[1, 0, 1, 0],
+bludiste_data = ([[1, 2, 1, 3],
                 [1, 0, 1, 0],
                 [1, 0, 0, 0],
                 [0, 1, 1, 1],
