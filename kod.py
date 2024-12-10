@@ -51,18 +51,24 @@ class DAO:
     def getBludisteDataCsv(self,filename):
         with open(filename, 'r') as file:
             reader = csv.reader(file)
+            bludiste_data = []
             for row in reader:
                 bludiste_data.append([int(value) for value in row])
             print(bludiste_data)
 
     def save_to_xml_file(self, filename):
-        root = ET.Element(bludiste_data)
-        for row in self.bludiste_data:
-            row = ET.SubElement(root, 'row')
-            for value in row:
-                ET.SubElement(row, 'value', value=str(value))
+        root = ET.Element("bludiste_data")
+
+
+        for row_data in self.bludiste_data:
+            row_element = ET.SubElement(root, 'row')
+            for value in row_data:
+                ET.SubElement(row_element, 'value', attrib={'value': str(value)})
+
+
         tree = ET.ElementTree(root)
-        tree.write(filename)
+        tree.write(filename, encoding='utf-8', xml_declaration=True)
+        print(f"Bludiste data saved to {filename}")
 
 
 
