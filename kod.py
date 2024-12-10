@@ -59,7 +59,6 @@ class DAO:
     def save_to_xml_file(self, filename):
         root = ET.Element("bludiste_data")
 
-
         for row_data in self.bludiste_data:
             row_element = ET.SubElement(root, 'row')
             for value in row_data:
@@ -70,7 +69,17 @@ class DAO:
         tree.write(filename, encoding='utf-8', xml_declaration=True)
         print(f"Bludiste data saved to {filename}")
 
+    def getBludisteDataXml(self,filename):
+        tree = ET.parse(filename)
+        root = tree.getroot()
 
+        bludiste_data = []
+        for row in root.findall('row'):  # Loop over each row
+            row_data = []
+            for value in row.findall('value'):
+                row_data.append(int(value.attrib['value']))
+            bludiste_data.append(row_data)
+        print (bludiste_data)
 
 class BludisteView:
     def __init__(self, canvas, bludiste_data, size):
@@ -107,7 +116,7 @@ bludiste = BludisteView(canvas, bludiste_data, 100)
 bludiste.kresli_bludiste()
 
 dao = DAO(bludiste_data)
-dao.getBludisteDataCsv("bludiste_save.csv")
+dao.getBludisteDataXml("bludiste_save.xml")
 dao.save_to_txt_file("bludiste_save.txt")
 dao.save_to_csv_file("bludiste_save.csv")
 dao.save_to_xml_file("bludiste_save.xml")
