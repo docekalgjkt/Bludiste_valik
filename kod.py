@@ -1,4 +1,5 @@
 import tkinter as tk
+from Tools.scripts.pysource import walk_python_files
 
 import numpy as np
 
@@ -9,9 +10,6 @@ import xml.etree.ElementTree as ET
 class BludisteApp(tk.Tk):
     def __init__(self, canvas):
         self.canvas = canvas
-
-
-
 
 class Bludiste:
     def __init__(self, bludiste_data):
@@ -24,6 +22,53 @@ class Bludiste:
     def getVyska(self):
         vyska = len(self.bludiste_data[0])
         return vyska
+
+class Robot:
+    def __init__(self, bludiste, bludiste_data):
+        self.bludiste = bludiste
+        self.bludiste_data = bludiste_data
+
+    def find_start(self, bludiste, bludiste_data):
+       start = []
+        for i in range(len(bludiste_data)):
+            for j in range(len(bludiste_data[0])):
+                if bludiste_data[i][j] == 2:
+                   start = bludiste_data[i][j]
+        return start
+
+    def find_end(self, bludiste, bludiste_data):
+       end = []
+        for i in range(len(bludiste_data)):
+            for j in range(len(bludiste_data[0])):
+                if bludiste_data[i][j] == 3:
+                    end = bludiste_data[i][j]
+        return end
+
+    def find_walls(self, bludiste, bludiste_data):
+       walls = []
+        for i in range(len(bludiste_data)):
+            for j in range(len(bludiste_data[0])):
+                if bludiste_data[i][j] == 1:
+                    walls.append([i][j])
+        return walls
+
+    def find_paths(self, bludiste, bludiste_data):
+       paths = []
+       for i in range(len(bludiste_data)):
+           for j in range(len(bludiste_data[0])):
+               if bludiste_data[i][j] == 0:
+                   paths.append([i][j])
+       return paths
+
+    def find_a_way(self, bludiste, bludiste_data):
+
+
+
+
+
+
+
+
 
 
 class DAO:
@@ -109,7 +154,7 @@ class BludisteView:
                     self.canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline="gray")
 
 
-bludiste_data = ([[1, 2, 1, 3],
+bludiste_data = ([[1, 2, 0, 3],
                 [1, 0, 1, 0],
                 [1, 0, 0, 0],
                 [0, 1, 1, 1],
